@@ -11,3 +11,6 @@ push
 .env
 sanctum
 migrációk és modellek (users, event, registration) 
+XAMPP indítás, migrálás
+Factory-k létrehozása (user, event, registration)
+Seeder-ek léterhozása (user, event, registration)
