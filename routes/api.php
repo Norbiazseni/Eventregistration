@@ -17,7 +17,7 @@ Route::post('/login',[AuthController::class,'login']);
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/me',[UserController::class,'me']);
     Route::put('/me',[UserController::class,'updateMe']);
-    Route::post('/logout',[UserController::class,'logout']);
+    Route::post('/logout',[AuthController::class,'logout']);
 
     //Event CRUD
     Route::prefix('events')->group(function(){
