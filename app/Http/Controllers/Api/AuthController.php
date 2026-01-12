@@ -16,7 +16,7 @@ class AuthController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email'=> 'required|email|unique:users,email',
-                'password'=>'required|string|min:6',
+                'password'=>'required|string|confirmed|min:6',
                 'phone'=>'nullable|string|max:20',
             ]);    
         } catch (ValidationException $e){
@@ -42,5 +42,47 @@ class AuthController extends Controller
             ]
         ], 201);
 
+    }
+    public function login(Request $request){
+      
+            $validated = $request->validate([
+                'email'=> 'required|email',
+                'password'=>'required|string',
+            ]);    
+       
+        $user = User::where('email',$validated['email'])->first();
+
+        if(!$user || !Hash::check($validated['password'], $user->password)){
+            return response()->json([
+                'message'=>'Invalid email or password'
+            ], 401);
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message'=>'Login successful',
+            'user'=> [
+                'id' => $user->id,
+                'name'=> $user->name,
+                'email'=> $user->email,
+                'phone'=>$user->phone,
+                'is_admin'=>$user->is_admin,
+            ],
+            'access'=>[
+                'token'=>$token,
+                'token_type'=>'Bearer'
+            ]
+        ], 200);
+    }
+
+    public function logout(Request $request){
+        $user = $request->user();
+        if ($user){
+            $user->currentAccessToken()->delete();
+        }
+        return response()->json([
+            'message'=>'Logged out successfully'
+        ], 200);
     }
 }
