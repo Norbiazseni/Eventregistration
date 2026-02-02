@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -30,6 +31,8 @@ class AuthController extends Controller
         $validated['remember_token']=Str::random(10);
 
         $user = User::create($validated);
+
+        event(new Registered($user));
 
         return response()->json([
             'message' => 'User created successfully',

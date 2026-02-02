@@ -13,6 +13,13 @@ Route::middleware('auth', 'admin')->prefix('admin')->name('admin.')->group(funct
     Route::get('events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
     Route::put('events/{event}', [EventController::class, 'update'])->name('events.update');
     Route::delete('events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+
+    Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+    Route::get('users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('users.create');
+    Route::post('users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+    Route::get('users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
+    Route::put('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+    Route::delete('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
 });
 
 Route::get('/', function () {
